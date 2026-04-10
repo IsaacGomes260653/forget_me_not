@@ -1,57 +1,60 @@
-ForgetMeNot 🧠
-Autor: Isaac Gomes
+Markdown
+# ForgetMeNot 🧠
 
-Repositório: https://github.com/IsaacGomes260653/forget_me_not
+**Autor:** Isaac Gomes  
+**Repositório:** [https://github.com/IsaacGomes260653/forget_me_not](https://github.com/IsaacGomes260653/forget_me_not)  
+**Versão:** 1.0.0
 
-Versão: 1.0.0
+## Descrição do Projeto
+O **ForgetMeNot** é um gerenciador de tarefas via linha de comando (CLI) desenvolvido para solucionar o problema da desorganização e do esquecimento de compromissos. A aplicação permite cadastrar afazeres com diferentes níveis de urgência, utilizando uma interface visual colorida que facilita a priorização das atividades diárias.
 
-Descrição do Projeto
-O ForgetMeNot é um gerenciador de tarefas via linha de comando (CLI) focado em resolver o problema da desorganização diária. A aplicação permite que o usuário cadastre seus afazeres e defina níveis de urgência, ajudando na priorização visual das atividades e evitando o esquecimento de compromissos importantes.
+## Público-Alvo
+Estudantes e profissionais que buscam uma ferramenta de produtividade minimalista, permitindo gerenciar tarefas diretamente do terminal de forma rápida e eficiente.
 
-Público-Alvo
-Estudantes e profissionais que utilizam o terminal em sua rotina e precisam de uma ferramenta rápida e leve para organizar listas de tarefas sem sair do ambiente de desenvolvimento.
+## Funcionalidades
+* Cadastro de tarefas com descrição detalhada.
+* Atribuição de prioridades (Alta, Média, Baixa) com destaque visual.
+* Listagem em formato de tabela organizada.
+* Persistência de dados local em arquivo JSON.
+* Marcação de tarefas concluídas.
 
-Funcionalidades
-Cadastro de tarefas com descrição.
+## Tecnologias Utilizadas
+* **Python 3**: Linguagem base do projeto.
+* **Rich**: Biblioteca para formatação visual e tabelas no terminal.
+* **Pytest**: Framework para execução de testes unitários.
+* **Flake8**: Ferramenta de linting para garantir a qualidade do código (PEP 8).
+* **GitHub Actions**: Implementação de pipeline de CI (Integração Contínua).
 
-Atribuição de níveis de prioridade (Alta, Média, Baixa).
-
-Listagem organizada em tabela com cores.
-
-Persistência de dados em arquivo JSON.
-
-Marcação de conclusão de tarefas.
-
-Tecnologias
-Python 3
-
-Biblioteca Rich (Interface)
-
-Pytest (Testes)
-
-Flake8 (Linting)
-
-GitHub Actions (CI)
-
-Instalação e Uso
-Instale as dependências:
-
-Bash
-pip install -r requirements.txt
-Inicie o programa:
+## Instalação e Uso
+1. Instale as dependências necessárias:
+   ```bash
+   pip install -r requirements.txt
+Execute a aplicação:
 
 Bash
 python src/main.py
 Testes e Qualidade
-Para garantir o funcionamento e a padronização do código, utilize os comandos abaixo:
+Para validar o código e garantir que não existam erros de estilo ou lógica, execute:
 
-Executar testes:
+Executar suíte de testes:
 
 Bash
 python -m pytest tests/
-Verificar estilo (Linting):
+Verificar padrão de código (Linting):
 
 Bash
 python -m flake8 src/
 Integração Contínua (CI)
-O projeto conta com um workflow do GitHub Actions que valida automaticamente cada push realizado. O processo instala as dependências e executa o Linting e os Testes para assegurar que a versão no repositório esteja sempre estável.
+O projeto utiliza GitHub Actions. A cada atualização (push), uma pipeline automática é disparada para instalar dependências, rodar o linter e executar os testes, assegurando a integridade da branch principal.
+
+
+---
+
+### Comandos para atualizar o GitHub agora:
+
+Após salvar o arquivo acima no VSCode, execute estes comandos no seu terminal para garantir que o tempo de atualização mude no GitHub:
+
+```bash
+git add README.md
+git commit -m "docs: finaliza readme conforme requisitos academicos"
+git push
