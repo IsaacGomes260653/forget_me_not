@@ -4,14 +4,14 @@
         "urgencia": "Alta",
         "concluida": true
     },
-    {   
+    {
         "nome": "Estudar",
         "urgencia": "Alta",
         "concluida": true
     },
     {
-        "nome": "estudar",
-        "urgencia": "Media",
-        "concluida": false
+        "nome": "Entrega do Bootcamp",
+        "urgencia": "Alta",
+        "concluida": true
     }
 ]
