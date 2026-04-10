@@ -4,16 +4,17 @@ from rich.console import Console
 from rich.table import Table
 
 console = Console()
-ARQUIVO_JSON = "tasks.json"
+# Voltamos para FILE_PATH para o seu pytest funcionar perfeitamente!
+FILE_PATH = "tasks.json"
 
 def carregar_tarefas():
-    if os.path.exists(ARQUIVO_JSON):
-        with open(ARQUIVO_JSON, "r", encoding="utf-8") as f:
+    if os.path.exists(FILE_PATH):
+        with open(FILE_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     return []
 
 def salvar_tarefas(tarefas):
-    with open(ARQUIVO_JSON, "w", encoding="utf-8") as f:
+    with open(FILE_PATH, "w", encoding="utf-8") as f:
         json.dump(tarefas, f, indent=4, ensure_ascii=False)
 
 def adicionar_tarefa(tarefas):
@@ -42,7 +43,7 @@ def adicionar_tarefa(tarefas):
 
 def listar_tarefas(tarefas):
     if not tarefas:
-        console.print("\n[bold yellow]📭 Nenhuma tarefa cadastrada no momento. Que tal adicionar uma?[/bold yellow]")
+        console.print("\n[bold yellow]📭 Nenhuma tarefa cadastrada no momento.[/bold yellow]")
         return
 
     table = Table(title="\n[bold magenta]:sparkles: Lista de Tarefas - ForgetMeNot :sparkles:[/bold magenta]")
@@ -68,12 +69,7 @@ def listar_tarefas(tarefas):
             cor_urgencia = "bold green"
             icone = "🟢"
             
-        table.add_row(
-            str(i), 
-            t.get("nome", ""), 
-            f"[{cor_urgencia}]{urgencia_val} {icone}[/{cor_urgencia}]", 
-            status
-        )
+        table.add_row(str(i), t.get("nome", ""), f"[{cor_urgencia}]{urgencia_val} {icone}[/{cor_urgencia}]", status)
 
     console.print(table)
 
@@ -83,15 +79,14 @@ def concluir_tarefa(tarefas):
         return tarefas
         
     try:
-        indice = int(input("\n👉 Digite o ID da tarefa para marcar como concluída: "))
+        indice = int(input("\n👉 Digite o ID para concluir: "))
         if 0 <= indice < len(tarefas):
             tarefas[indice]["concluida"] = True
-            nome_tarefa = tarefas[indice].get('nome', '')
-            console.print(f"\n[bold green]🎉 Sucesso! A tarefa '{nome_tarefa}' foi concluída![/bold green]")
+            console.print(f"\n[bold green]🎉 Sucesso! Tarefa concluída![/bold green]")
         else:
-            console.print("[bold red]❌ ID inválido. Tarefa não encontrada.[/bold red]")
+            console.print("[bold red]❌ ID inválido.[/bold red]")
     except ValueError:
-        console.print("[bold red]⚠️ Por favor, digite um número válido.[/bold red]")
+        console.print("[bold red]⚠️ Digite um número válido.[/bold red]")
     return tarefas
 
 def deletar_tarefa(tarefas):
@@ -100,30 +95,23 @@ def deletar_tarefa(tarefas):
         return tarefas
 
     try:
-        indice = int(input("\n👉 Digite o ID da tarefa que deseja excluir: "))
+        indice = int(input("\n👉 Digite o ID para excluir: "))
         if 0 <= indice < len(tarefas):
-            tarefa_removida = tarefas.pop(indice)
-            nome_tarefa = tarefa_removida.get('nome', '')
-            console.print(f"\n[bold green]🗑️ Tarefa '{nome_tarefa}' excluída para sempre![/bold green]")
+            tarefas.pop(indice)
+            console.print(f"\n[bold green]🗑️ Tarefa excluída![/bold green]")
         else:
-            console.print("[bold red]❌ ID inválido. Tarefa não encontrada.[/bold red]")
+            console.print("[bold red]❌ ID inválido.[/bold red]")
     except ValueError:
-        console.print("[bold red]⚠️ Por favor, digite um número válido.[/bold red]")
+        console.print("[bold red]⚠️ Digite um número válido.[/bold red]")
         
     return tarefas
 
 def main():
     tarefas = carregar_tarefas()
-    
     while True:
         console.print("\n[bold cyan]:rocket: --- Menu ForgetMeNot --- :rocket:[/bold cyan]")
-        console.print("1. ➕ Adicionar Tarefa")
-        console.print("2. 📋 Listar Tarefas")
-        console.print("3. ✅ Concluir Tarefa")
-        console.print("4. 🗑️ Deletar Tarefa")
-        console.print("5. 🚪 Sair")
-        
-        opcao = input("\n👉 Escolha uma opção: ")
+        console.print("1. ➕ Adicionar Tarefa\n2. 📋 Listar Tarefas\n3. ✅ Concluir Tarefa\n4. 🗑️ Deletar Tarefa\n5. 🚪 Sair")
+        opcao = input("\n👉 Escolha: ")
         
         if opcao == "1":
             tarefas = adicionar_tarefa(tarefas)
@@ -137,11 +125,10 @@ def main():
             tarefas = deletar_tarefa(tarefas)
             salvar_tarefas(tarefas)
         elif opcao == "5":
-            console.print("\n[bold blue]👋 Saindo do ForgetMeNot. Até logo e seja produtivo![/bold blue]\n")
+            console.print("\n[bold blue]👋 Até logo![/bold blue]\n")
             break
         else:
-            console.print("[bold red]❌ Opção inválida. Tente novamente.[/bold red]")
+            console.print("[bold red]❌ Opção inválida.[/bold red]")
 
 if __name__ == "__main__":
     main()
-    
