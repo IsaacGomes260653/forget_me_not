@@ -1,63 +1,57 @@
-Com certeza! Vamos deixar o seu **README.md** tão completo que qualquer pessoa (ou professor) conseguirá rodar seu projeto de olhos fechados. Vou incluir desde a explicação do que é o programa até como resolver possíveis problemas.
+ForgetMeNot 🧠
+Autor: Isaac Gomes
 
-Aqui está o conteúdo definitivo para você copiar e colar no seu arquivo:
+Repositório: https://github.com/IsaacGomes260653/forget_me_not
 
-```markdown
-# ForgetMeNot 🧠 - Gerenciador de Tarefas Inteligente
+Versão: 1.0.0
 
-O **ForgetMeNot** é uma aplicação de terminal (CLI) desenvolvida em Python para ajudar pessoas a organizarem suas tarefas diárias, evitando esquecimentos e priorizando o que realmente importa.
+Descrição do Projeto
+O ForgetMeNot é um gerenciador de tarefas via linha de comando (CLI) focado em resolver o problema da desorganização diária. A aplicação permite que o usuário cadastre seus afazeres e defina níveis de urgência, ajudando na priorização visual das atividades e evitando o esquecimento de compromissos importantes.
 
-## 📋 Funcionalidades Principal
-- **Cadastro de Tarefas**: Adicione o que precisa fazer com um nome e nível de urgência.
-- **Priorização**: Escolha entre níveis de urgência Alta, Média ou Baixa.
-- **Visualização**: Tabela organizada com cores para destacar as prioridades.
-- **Persistência**: Seus dados são salvos automaticamente no arquivo `tasks.json`.
+Público-Alvo
+Estudantes e profissionais que utilizam o terminal em sua rotina e precisam de uma ferramenta rápida e leve para organizar listas de tarefas sem sair do ambiente de desenvolvimento.
 
-## 🚀 Como Instalar e Usar
+Funcionalidades
+Cadastro de tarefas com descrição.
 
-Siga os passos abaixo para preparar o ambiente e rodar o programa:
+Atribuição de níveis de prioridade (Alta, Média, Baixa).
 
-### 1. Preparar o Ambiente
-Certifique-se de ter o Python instalado. No terminal, instale as bibliotecas necessárias usando o arquivo de requisitos:
-```bash
+Listagem organizada em tabela com cores.
+
+Persistência de dados em arquivo JSON.
+
+Marcação de conclusão de tarefas.
+
+Tecnologias
+Python 3
+
+Biblioteca Rich (Interface)
+
+Pytest (Testes)
+
+Flake8 (Linting)
+
+GitHub Actions (CI)
+
+Instalação e Uso
+Instale as dependências:
+
+Bash
 pip install -r requirements.txt
-```
+Inicie o programa:
 
-### 2. Iniciar o Programa
-Para abrir o menu interativo, execute o seguinte comando:
-```bash
+Bash
 python src/main.py
-```
+Testes e Qualidade
+Para garantir o funcionamento e a padronização do código, utilize os comandos abaixo:
 
-### 3. Comandos do Menu
-Dentro do programa, você terá as seguintes opções:
-- **[1] Adicionar Tarefa**: Digite o nome da tarefa e escolha a urgência.
-- **[2] Listar Tarefas**: Veja sua tabela de afazeres.
-- **[3] Concluir Tarefa**: Digite o ID da tarefa para marcá-la como concluída.
-- **[4] Sair**: Encerra o programa com segurança.
+Executar testes:
 
----
-
-## 🧪 Qualidade e Testes
-
-Este projeto segue padrões rigorosos de desenvolvimento para garantir que tudo funcione bem:
-
-### Executar Testes Automatizados
-Para verificar se a lógica de salvar e concluir tarefas está correta:
-```bash
+Bash
 python -m pytest tests/
-```
+Verificar estilo (Linting):
 
-### Verificar Estilo de Código (Linting)
-Para garantir que o código segue as boas práticas de organização (PEP 8):
-```bash
+Bash
 python -m flake8 src/
-```
-
-## 📦 Estrutura do Projeto
-- `src/main.py`: Código principal da aplicação.
-- `tests/test_main.py`: Testes automatizados.
-- `requirements.txt`: Lista de dependências do sistema.
-- `VERSION`: Versão atual do software (v1.0.0).
-```
-
+Integração Contínua (CI)
+O projeto conta com um workflow do GitHub Actions que valida automaticamente cada push realizado. O processo instala as dependências e executa o Linting e os Testes para assegurar que a versão no repositório esteja sempre estável.

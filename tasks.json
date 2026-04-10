@@ -2,6 +2,16 @@
     {
         "nome": "FACULDADE",
         "urgencia": "Alta",
+        "concluida": true
+    },
+    {
+        "nome": "Estudar",
+        "urgencia": "Alta",
+        "concluida": true
+    },
+    {
+        "nome": "estudar",
+        "urgencia": "Media",
         "concluida": false
     }
 ]
