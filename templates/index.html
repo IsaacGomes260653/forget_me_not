@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ForgetMeNot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f4f4f8; color: #222; min-height: 100vh; padding: 32px 16px; }
+    .container { max-width: 680px; margin: 0 auto; }
+    h1 { font-size: 2rem; margin-bottom: 4px; }
+    .subtitle { color: #666; margin-bottom: 24px; font-size: 0.95rem; }
+
+    .dica { background: #fff; border-left: 4px solid #7c3aed; padding: 12px 16px;
+            border-radius: 8px; margin-bottom: 28px; font-style: italic; color: #444; }
+    .dica span { font-size: 0.75rem; color: #7c3aed; font-style: normal; font-weight: 600;
+                 display: block; margin-bottom: 4px; }
+
+    form.nova-tarefa { background: #fff; padding: 20px; border-radius: 12px;
+                       margin-bottom: 28px; display: flex; gap: 10px; flex-wrap: wrap; }
+    form.nova-tarefa input[type=text] { flex: 1; min-width: 180px; padding: 10px 14px;
+                                        border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    form.nova-tarefa select { padding: 10px 12px; border: 1px solid #ddd;
+                              border-radius: 8px; font-size: 1rem; background: #fff; }
+    form.nova-tarefa button { padding: 10px 20px; background: #7c3aed; color: #fff;
+                              border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+    form.nova-tarefa button:hover { background: #6d28d9; }
+
+    .lista { display: flex; flex-direction: column; gap: 10px; }
+    .tarefa { background: #fff; border-radius: 10px; padding: 14px 18px;
+              display: flex; align-items: center; gap: 12px; }
+    .tarefa.concluida { opacity: 0.55; }
+    .tarefa.concluida .nome { text-decoration: line-through; }
+    .urgencia { font-size: 0.72rem; font-weight: 700; padding: 3px 8px;
+                border-radius: 99px; white-space: nowrap; }
+    .Alta  { background: #fee2e2; color: #991b1b; }
+    .Media, .Média { background: #fef9c3; color: #854d0e; }
+    .Baixa { background: #dcfce7; color: #166534; }
+    .nome { flex: 1; font-size: 1rem; }
+    .acoes { display: flex; gap: 8px; }
+    .acoes a { padding: 6px 12px; border-radius: 7px; font-size: 0.85rem;
+               text-decoration: none; font-weight: 500; }
+    .btn-concluir { background: #d1fae5; color: #065f46; }
+    .btn-concluir:hover { background: #a7f3d0; }
+    .btn-deletar  { background: #fee2e2; color: #991b1b; }
+    .btn-deletar:hover  { background: #fecaca; }
+    .vazia { text-align: center; color: #999; padding: 40px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌸 ForgetMeNot</h1>
+    <p class="subtitle">Seu gerenciador de tarefas</p>
+
+    <div class="dica">
+      <span>💡 Dica do dia</span>
+      {{ dica }}
+    </div>
+
+    <form class="nova-tarefa" action="/adicionar" method="POST">
+      <input type="text" name="nome" placeholder="Nova tarefa..." required />
+      <select name="urgencia">
+        <option value="Alta">🔴 Alta</option>
+        <option value="Média" selected>🟡 Média</option>
+        <option value="Baixa">🟢 Baixa</option>
+      </select>
+      <button type="submit">➕ Adicionar</button>
+    </form>
+
+    <div class="lista">
+      {% if tarefas %}
+        {% for tarefa in tarefas %}
+          <div class="tarefa {% if tarefa.concluida %}concluida{% endif %}">
+            <span class="urgencia {{ tarefa.urgencia | replace('é', 'e') }}">
+              {{ tarefa.urgencia }}
+            </span>
+            <span class="nome">{{ tarefa.nome }}</span>
+            <div class="acoes">
+              {% if not tarefa.concluida %}
+                <a href="/concluir/{{ loop.index0 }}" class="btn-concluir">✅ Concluir</a>
+              {% endif %}
+              <a href="/deletar/{{ loop.index0 }}" class="btn-deletar">🗑️ Deletar</a>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="vazia">📭 Nenhuma tarefa ainda. Adicione uma acima!</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
