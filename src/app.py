@@ -3,7 +3,7 @@ import os
 import requests
 from flask import Flask, render_template, request, redirect, url_for
 
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), "..", "templates"))
 
 FILE_PATH = "tasks.json"
 
@@ -43,12 +43,12 @@ def index():
 def adicionar():
     nome = request.form.get("nome", "").strip()
     urgencia = request.form.get("urgencia", "Baixa")
+    prazo = request.form.get("prazo", "")
     if nome:
         tarefas = carregar_tarefas()
-        tarefas.append({"nome": nome, "urgencia": urgencia, "concluida": False})
+        tarefas.append({"nome": nome, "urgencia": urgencia, "concluida": False, "prazo": prazo})
         salvar_tarefas(tarefas)
     return redirect(url_for("index"))
-
 
 @app.route("/concluir/<int:indice>")
 def concluir(indice):

@@ -3,90 +3,277 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="light only">
   <title>ForgetMeNot</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: sans-serif; background: #f4f4f8; color: #222; min-height: 100vh; padding: 32px 16px; }
-    .container { max-width: 680px; margin: 0 auto; }
-    h1 { font-size: 2rem; margin-bottom: 4px; }
-    .subtitle { color: #666; margin-bottom: 24px; font-size: 0.95rem; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #111; min-height: 100vh; }
 
-    .dica { background: #fff; border-left: 4px solid #7c3aed; padding: 12px 16px;
-            border-radius: 8px; margin-bottom: 28px; font-style: italic; color: #444; }
-    .dica span { font-size: 0.75rem; color: #7c3aed; font-style: normal; font-weight: 600;
-                 display: block; margin-bottom: 4px; }
+    /* HEADER */
+    header { background: #111; padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { display: flex; align-items: center; gap: 10px; }
+    .logo-dot { width: 8px; height: 8px; background: #4a9e6b; border-radius: 50%; }
+    .logo-text { color: #fff; font-size: 14px; font-weight: 500; letter-spacing: .03em; }
+    .logo-sub { color: #555; font-size: 12px; font-weight: 400; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .header-date { font-size: 11px; color: #666; letter-spacing: .03em; }
+    .header-count { font-size: 11px; color: #4a9e6b; letter-spacing: .04em; font-weight: 500; }
 
-    form.nova-tarefa { background: #fff; padding: 20px; border-radius: 12px;
-                       margin-bottom: 28px; display: flex; gap: 10px; flex-wrap: wrap; }
-    form.nova-tarefa input[type=text] { flex: 1; min-width: 180px; padding: 10px 14px;
-                                        border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-    form.nova-tarefa select { padding: 10px 12px; border: 1px solid #ddd;
-                              border-radius: 8px; font-size: 1rem; background: #fff; }
-    form.nova-tarefa button { padding: 10px 20px; background: #7c3aed; color: #fff;
-                              border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
-    form.nova-tarefa button:hover { background: #6d28d9; }
+    /* CONTAINER */
+    .container { max-width: 720px; margin: 0 auto; padding: 36px 24px 80px; }
 
-    .lista { display: flex; flex-direction: column; gap: 10px; }
-    .tarefa { background: #fff; border-radius: 10px; padding: 14px 18px;
-              display: flex; align-items: center; gap: 12px; }
-    .tarefa.concluida { opacity: 0.55; }
-    .tarefa.concluida .nome { text-decoration: line-through; }
-    .urgencia { font-size: 0.72rem; font-weight: 700; padding: 3px 8px;
-                border-radius: 99px; white-space: nowrap; }
-    .Alta  { background: #fee2e2; color: #991b1b; }
-    .Media, .Média { background: #fef9c3; color: #854d0e; }
-    .Baixa { background: #dcfce7; color: #166534; }
-    .nome { flex: 1; font-size: 1rem; }
-    .acoes { display: flex; gap: 8px; }
-    .acoes a { padding: 6px 12px; border-radius: 7px; font-size: 0.85rem;
-               text-decoration: none; font-weight: 500; }
-    .btn-concluir { background: #d1fae5; color: #065f46; }
-    .btn-concluir:hover { background: #a7f3d0; }
-    .btn-deletar  { background: #fee2e2; color: #991b1b; }
-    .btn-deletar:hover  { background: #fecaca; }
-    .vazia { text-align: center; color: #999; padding: 40px 0; }
+    /* PROGRESSO */
+    .progresso-box { background: #fff; border: 0.5px solid #d4d4d0; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+    .progresso-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .progresso-label { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #888; }
+    .progresso-num { font-size: 11px; color: #4a9e6b; font-weight: 600; }
+    .barra-bg { background: #f0f0ee; border-radius: 99px; height: 5px; width: 100%; }
+    .barra-fill { background: #4a9e6b; border-radius: 99px; height: 5px; transition: width .4s ease; }
+    .msg-completo { margin-top: 10px; font-size: 12px; color: #4a9e6b; font-style: italic; display: none; }
+    .msg-completo.visivel { display: block; }
+
+    /* DICA */
+    .dica { border: 0.5px solid #d4d4d0; border-left: 3px solid #4a9e6b; border-radius: 0 8px 8px 0; background: #fff; padding: 12px 16px; margin-bottom: 24px; }
+    .dica-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #4a9e6b; display: block; margin-bottom: 5px; }
+    .dica-texto { font-size: 13px; color: #555; font-style: italic; line-height: 1.5; }
+
+    /* FORMULÁRIO */
+    form.nova-tarefa { background: #fff; border: 0.5px solid #d4d4d0; border-radius: 10px; padding: 16px 20px; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 28px; flex-wrap: wrap; }
+    .input-wrap { flex: 1; min-width: 180px; position: relative; }
+    form.nova-tarefa input[type=text] { width: 100%; padding: 9px 14px; border: 0.5px solid #d4d4d0; border-radius: 7px; font-size: 13px; color: #111; background: #fafafa; outline: none; transition: border-color .15s; }
+    form.nova-tarefa input[type=text]:focus { border-color: #4a9e6b; }
+    form.nova-tarefa input[type=text]::placeholder { color: #aaa; }
+    .char-count { font-size: 10px; color: #bbb; text-align: right; margin-top: 4px; }
+    .char-count.aviso { color: #d97706; }
+    form.nova-tarefa select, form.nova-tarefa input[type=date] { padding: 9px 12px; border: 0.5px solid #d4d4d0; border-radius: 7px; font-size: 13px; color: #555; background: #fafafa; outline: none; cursor: pointer; }
+    form.nova-tarefa input[type=date] { color: #555; }
+    form.nova-tarefa button { padding: 9px 20px; background: #111; color: #fff; border: none; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background .15s; white-space: nowrap; align-self: flex-start; margin-top: 0; }
+    form.nova-tarefa button:hover { background: #2a2a2a; }
+
+    /* SEÇÕES */
+    .secao-titulo { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #888; margin-bottom: 10px; padding: 0 2px; }
+    .lista { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+
+    /* TAREFA */
+    .tarefa { background: #fff; border: 0.5px solid #d4d4d0; border-radius: 9px; padding: 13px 18px; display: flex; align-items: center; gap: 12px; transition: border-color .15s, opacity .3s; }
+    .tarefa:hover { border-color: #bbb; }
+    .tarefa.concluida { opacity: .45; }
+    .tarefa.concluida .tarefa-nome { text-decoration: line-through; color: #999; }
+
+    .badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; letter-spacing: .03em; white-space: nowrap; flex-shrink: 0; }
+    .badge-alta  { background: #fee2e2; color: #991b1b; }
+    .badge-media { background: #fef3c7; color: #92400e; }
+    .badge-baixa { background: #d1fae5; color: #065f46; }
+
+    .tarefa-info { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .tarefa-nome { font-size: 13px; color: #111; line-height: 1.4; }
+    .tarefa-prazo { font-size: 11px; color: #aaa; }
+    .tarefa-prazo.vencido { color: #dc2626; font-weight: 500; }
+    .tarefa-prazo.hoje { color: #d97706; font-weight: 500; }
+    .tarefa-prazo.ok { color: #4a9e6b; }
+
+    .acoes { display: flex; gap: 6px; flex-shrink: 0; }
+    .acoes a { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 5px; text-decoration: none; border: 0.5px solid #d4d4d0; color: #555; background: transparent; transition: all .15s; white-space: nowrap; cursor: pointer; }
+    .acoes a:hover { background: #f5f5f3; color: #111; }
+    .btn-concluir { color: #4a9e6b !important; border-color: #4a9e6b !important; }
+    .btn-concluir:hover { background: #f0faf4 !important; }
+    .btn-deletar:hover { background: #fff0f0 !important; color: #991b1b !important; border-color: #fca5a5 !important; }
+
+    .vazia { text-align: center; color: #bbb; font-size: 13px; padding: 40px 0; border: 0.5px dashed #d4d4d0; border-radius: 9px; background: #fff; }
+
+    /* MODAL CONFIRMAÇÃO */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 100; align-items: center; justify-content: center; }
+    .overlay.ativo { display: flex; }
+    .modal { background: #fff; border-radius: 12px; padding: 28px 32px; max-width: 360px; width: 90%; text-align: center; }
+    .modal h3 { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+    .modal p { font-size: 13px; color: #666; margin-bottom: 24px; line-height: 1.5; }
+    .modal-acoes { display: flex; gap: 10px; justify-content: center; }
+    .modal-acoes button { padding: 8px 20px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; border: 0.5px solid #d4d4d0; }
+    .btn-cancelar { background: #fff; color: #555; }
+    .btn-confirmar { background: #111; color: #fff; border-color: #111; }
+
+    /* FOOTER */
+    footer { border-top: 0.5px solid #d4d4d0; background: #fff; padding: 14px 40px; display: flex; justify-content: center; gap: 4px; }
+    footer span { font-size: 11px; color: #bbb; }
+    footer strong { font-size: 11px; color: #4a9e6b; font-weight: 500; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🌸 ForgetMeNot</h1>
-    <p class="subtitle">Seu gerenciador de tarefas</p>
 
-    <div class="dica">
-      <span>💡 Dica do dia</span>
-      {{ dica }}
-    </div>
-
-    <form class="nova-tarefa" action="/adicionar" method="POST">
-      <input type="text" name="nome" placeholder="Nova tarefa..." required />
-      <select name="urgencia">
-        <option value="Alta">🔴 Alta</option>
-        <option value="Média" selected>🟡 Média</option>
-        <option value="Baixa">🟢 Baixa</option>
-      </select>
-      <button type="submit">➕ Adicionar</button>
-    </form>
-
-    <div class="lista">
-      {% if tarefas %}
-        {% for tarefa in tarefas %}
-          <div class="tarefa {% if tarefa.concluida %}concluida{% endif %}">
-            <span class="urgencia {{ tarefa.urgencia | replace('é', 'e') }}">
-              {{ tarefa.urgencia }}
-            </span>
-            <span class="nome">{{ tarefa.nome }}</span>
-            <div class="acoes">
-              {% if not tarefa.concluida %}
-                <a href="/concluir/{{ loop.index0 }}" class="btn-concluir">✅ Concluir</a>
-              {% endif %}
-              <a href="/deletar/{{ loop.index0 }}" class="btn-deletar">🗑️ Deletar</a>
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p class="vazia">📭 Nenhuma tarefa ainda. Adicione uma acima!</p>
-      {% endif %}
+  <!-- MODAL CONFIRMAÇÃO DELETE -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Deletar tarefa</h3>
+      <p>Tem certeza que deseja remover esta tarefa? Esta ação não pode ser desfeita.</p>
+      <div class="modal-acoes">
+        <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+        <button class="btn-confirmar" id="btn-confirmar-delete">Deletar</button>
+      </div>
     </div>
   </div>
+
+  <header>
+    <div class="header-logo">
+      <div class="logo-dot"></div>
+      <span class="logo-text">ForgetMeNot <span class="logo-sub">— gerenciador de tarefas</span></span>
+    </div>
+    <div class="header-right">
+      <span class="header-date" id="data-hoje"></span>
+      <span class="header-count">
+        {% set pendentes = tarefas | selectattr('concluida', 'equalto', false) | list | length %}
+        {{ pendentes }} pendente{{ 's' if pendentes != 1 else '' }}
+      </span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- PROGRESSO -->
+    {% set total = tarefas | length %}
+    {% set concluidas = tarefas | selectattr('concluida', 'equalto', true) | list | length %}
+    {% set pct = ((concluidas / total * 100) | int) if total > 0 else 0 %}
+    <div class="progresso-box">
+      <div class="progresso-topo">
+        <span class="progresso-label">Progresso</span>
+        <span class="progresso-num">{{ concluidas }}/{{ total }} concluídas</span>
+      </div>
+      <div class="barra-bg">
+        <div class="barra-fill" style="width: {{ pct }}%"></div>
+      </div>
+      {% if total > 0 and concluidas == total %}
+      <p class="msg-completo visivel">🎉 Todas as tarefas concluídas! Excelente trabalho.</p>
+      {% endif %}
+    </div>
+
+    <!-- DICA -->
+    <div class="dica">
+      <span class="dica-label">Dica do dia</span>
+      <span class="dica-texto">{{ dica }}</span>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <form class="nova-tarefa" action="/adicionar" method="POST">
+      <div class="input-wrap">
+        <input type="text" name="nome" id="campo-tarefa" placeholder="Descreva sua tarefa..." maxlength="80" required />
+        <div class="char-count" id="char-count">0/80</div>
+      </div>
+      <select name="urgencia">
+        <option value="Alta">Alta</option>
+        <option value="Média" selected>Média</option>
+        <option value="Baixa">Baixa</option>
+      </select>
+      <input type="date" name="prazo" />
+      <button type="submit">+ Adicionar</button>
+    </form>
+
+    <!-- PENDENTES -->
+    {% set pendentes_lista = tarefas | selectattr('concluida', 'equalto', false) | list %}
+    {% if pendentes_lista %}
+    <p class="secao-titulo">Pendentes ({{ pendentes_lista | length }})</p>
+    <div class="lista">
+      {% for tarefa in tarefas %}
+        {% if not tarefa.concluida %}
+        <div class="tarefa">
+          {% set urg = tarefa.urgencia | replace('é', 'e') %}
+          <span class="badge badge-{{ urg | lower }}">{{ tarefa.urgencia }}</span>
+          <div class="tarefa-info">
+            <span class="tarefa-nome">{{ tarefa.nome }}</span>
+            {% if tarefa.prazo %}
+              <span class="tarefa-prazo prazo-js" data-prazo="{{ tarefa.prazo }}">📅 {{ tarefa.prazo }}</span>
+            {% endif %}
+          </div>
+          <div class="acoes">
+            <a href="/concluir/{{ loop.index0 }}" class="btn-concluir">Concluir</a>
+            <a onclick="abrirModal('/deletar/{{ loop.index0 }}')" class="btn-deletar">Deletar</a>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- CONCLUÍDAS -->
+    {% set concluidas_lista = tarefas | selectattr('concluida', 'equalto', true) | list %}
+    {% if concluidas_lista %}
+    <p class="secao-titulo">Concluídas ({{ concluidas_lista | length }})</p>
+    <div class="lista">
+      {% for tarefa in tarefas %}
+        {% if tarefa.concluida %}
+        <div class="tarefa concluida">
+          {% set urg = tarefa.urgencia | replace('é', 'e') %}
+          <span class="badge badge-{{ urg | lower }}">{{ tarefa.urgencia }}</span>
+          <div class="tarefa-info">
+            <span class="tarefa-nome">{{ tarefa.nome }}</span>
+            {% if tarefa.prazo %}
+              <span class="tarefa-prazo">📅 {{ tarefa.prazo }}</span>
+            {% endif %}
+          </div>
+          <div class="acoes">
+            <a onclick="abrirModal('/deletar/{{ loop.index0 }}')" class="btn-deletar">Deletar</a>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not tarefas %}
+    <div class="vazia">Nenhuma tarefa ainda. Adicione uma acima.</div>
+    {% endif %}
+
+  </div>
+
+  <footer>
+    <span>Feito com</span>
+    <strong>Python + Flask</strong>
+    <span>· ForgetMeNot</span>
+  </footer>
+
+  <script>
+    // Data no header
+    const hoje = new Date();
+    document.getElementById('data-hoje').textContent = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+
+    // Contador de caracteres
+    const campo = document.getElementById('campo-tarefa');
+    const contador = document.getElementById('char-count');
+    campo.addEventListener('input', () => {
+      const n = campo.value.length;
+      contador.textContent = n + '/80';
+      contador.classList.toggle('aviso', n > 60);
+    });
+
+    // Modal de confirmação
+    let urlParaDeletar = '';
+    function abrirModal(url) {
+      urlParaDeletar = url;
+      document.getElementById('overlay').classList.add('ativo');
+    }
+    function fecharModal() {
+      document.getElementById('overlay').classList.remove('ativo');
+      urlParaDeletar = '';
+    }
+    document.getElementById('btn-confirmar-delete').addEventListener('click', () => {
+      if (urlParaDeletar) window.location.href = urlParaDeletar;
+    });
+    document.getElementById('overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) fecharModal();
+    });
+
+    // Colorir prazo
+    const prazos = document.querySelectorAll('.prazo-js');
+    const hojeStr = hoje.toISOString().split('T')[0];
+    prazos.forEach(el => {
+      const prazo = el.dataset.prazo;
+      if (prazo < hojeStr) el.classList.add('vencido'), el.textContent = '⚠️ Vencido em ' + formatarData(prazo);
+      else if (prazo === hojeStr) el.classList.add('hoje'), el.textContent = '⏰ Vence hoje!';
+      else el.classList.add('ok'), el.textContent = '📅 ' + formatarData(prazo);
+    });
+    function formatarData(str) {
+      const [y,m,d] = str.split('-');
+      return d + '/' + m + '/' + y;
+    }
+  </script>
+
 </body>
 </html>
