@@ -1,3 +1,6 @@
 rich==13.7.1
 pytest==8.1.1
 flake8==7.0.0
+flask==3.0.3
+requests==2.31.0
+gunicorn==21.2.0

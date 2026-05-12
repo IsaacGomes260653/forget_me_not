@@ -1,17 +1,28 @@
 [
     {
-        "nome": "FACULDADE",
-        "urgencia": "Alta",
-        "concluida": true
-    },
-    {
-        "nome": "Estudar",
-        "urgencia": "Alta",
-        "concluida": true
-    },
-    {
         "nome": "Entrega do Bootcamp",
         "urgencia": "Alta",
         "concluida": true
+    },
+    {
+        "nome": "Comer",
+        "urgencia": "Baixa",
+        "concluida": true
+    },
+    {
+        "nome": "Entrega intermediária",
+        "urgencia": "Alta",
+        "concluida": false
+    },
+    {
+        "nome": "Trabalhar",
+        "urgencia": "Média",
+        "concluida": true
+    },
+    {
+        "nome": "Entrega Final",
+        "urgencia": "Alta",
+        "concluida": false,
+        "prazo": "2026-06-14"
     }
 ]
