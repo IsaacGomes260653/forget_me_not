@@ -50,6 +50,7 @@ def adicionar():
         salvar_tarefas(tarefas)
     return redirect(url_for("index"))
 
+
 @app.route("/concluir/<int:indice>")
 def concluir(indice):
     tarefas = carregar_tarefas()
