@@ -161,3 +161,51 @@ forget_me_not/
 ├── Procfile                # Configuração para deploy no Render
 └── README.md
 ```
+
+---
+
+# 🦧🐦‍🔥 ForgetMeNot — Task Manager (English)
+
+## 🌐 Live app
+**Live at:** [https://forget-me-not-z9hy.onrender.com](https://forget-me-not-z9hy.onrender.com)
+
+## 📝 Introduction
+**ForgetMeNot** is a To-Do List app built in Python as an academic project to demonstrate core programming concepts, data persistence, public API integration, automated testing, cloud deployment, and CI/CD.
+
+It evolved from a terminal CLI app into a **full web application**, integrating an external public API and deployed to the cloud.
+
+## ✨ Features
+
+**Web UI (current):** add tasks with description, urgency (High/Medium/Low), and due date; tasks split into *Pending* and *Completed* sections; a progress bar tracking completion percentage; a "tip of the day" via the [Advice Slip API](https://api.adviceslip.com); color-coded deadlines (green = on time, orange = due today, red = overdue); delete confirmation modal; instant task completion; and automatic persistence to `tasks.json`.
+
+**CLI (original version):** colored task table via `rich`, with add/complete/delete from the terminal.
+
+## 🛠️ Tech stack
+
+Python 3.11+, Flask, Jinja2, Requests, Rich (CLI), Pytest, Flake8, Gunicorn, GitHub Actions (CI/CD), Render (hosting).
+
+## 🔌 Public API integration
+
+Consumes the free, key-less **Advice Slip API** (`GET https://api.adviceslip.com/advice`) — a random tip is fetched on every visit, with a fallback message if the API is unavailable.
+
+## 🚀 Install & run
+
+```bash
+git clone https://github.com/IsaacGomes260653/forget_me_not.git
+cd forget_me_not
+pip install -r requirements.txt
+python src/app.py      # web app -> http://127.0.0.1:5000
+python src/main.py     # original CLI version
+```
+
+## 🧪 Tests
+
+Unit and integration tests run automatically via GitHub Actions on every push.
+
+```bash
+python -m pytest tests/ -v
+```
+
+## 🔄 CI/CD
+
+Every push/PR runs Flake8 (lint) then Pytest (unit + integration tests) via GitHub Actions.
