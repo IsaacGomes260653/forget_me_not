@@ -1,7 +1,9 @@
 # 🦧🐦‍🔥 ForgetMeNot — Gerenciador de Tarefas
 
 ## 🌐 Aplicação publicada
-**Acesse em:** [https://forget-me-not-z9hy.onrender.com](https://forget-me-not-z9hy.onrender.com)
+**Acesse em:** [https://forget-me-not-z9hy.onrender.com](https://forget-me-not-z9hy.onrender.com) (no plano gratuito do Render, o primeiro acesso pode levar uns 40 segundos)
+
+![Tela do ForgetMeNot: barra de progresso, dica do dia vinda da Advice Slip API, formulário de nova tarefa e as listas de pendentes e concluídas](.github/screenshot.png)
 
 ---
 
@@ -159,8 +161,15 @@ forget_me_not/
 ├── tasks.json              # Persistência de dados
 ├── requirements.txt        # Dependências do projeto
 ├── Procfile                # Configuração para deploy no Render
+├── LICENSE                 # Licença MIT
 └── README.md
 ```
+
+---
+
+## 📄 Licença
+
+[MIT](LICENSE)
 
 ---
 
@@ -209,3 +218,7 @@ python -m pytest tests/ -v
 ## 🔄 CI/CD
 
 Every push/PR runs Flake8 (lint) then Pytest (unit + integration tests) via GitHub Actions.
+
+## 📄 License
+
+[MIT](LICENSE)
