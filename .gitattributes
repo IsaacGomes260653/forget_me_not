@@ -1,0 +1,3 @@
+# Os templates Jinja da interface web (HTML com CSS embutido) não entram na
+# contagem de linguagens, para o repositório aparecer como o projeto Python/Flask que é.
+templates/** linguist-detectable=false
