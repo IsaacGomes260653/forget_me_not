@@ -89,7 +89,7 @@ No terminal (`src/main.py`): um menu com cinco opções (adicionar, listar, conc
 | Python e Flask | A página e as quatro rotas cabem em um arquivo de 73 linhas, sem estrutura obrigatória de projeto. |
 | Jinja (`templates/index.html`) | Contagens, barra de progresso e seções já saem prontas do servidor. O JavaScript cuida só do que depende do navegador: a data, a cor do prazo, o contador de caracteres e a janela de confirmação. |
 | Arquivo JSON | Dá para abrir e ler, e serve à web e ao terminal ao mesmo tempo. Para o tamanho do projeto, não precisava de banco. |
-| Requests | Busca a dica com limite de 5 segundos. |
+| Requests | Faz o pedido da dica do dia à Advice Slip API. |
 | rich | Tabela colorida e emojis no terminal, sem escrever códigos de cor na mão. |
 | Pytest e `unittest.mock` | Testam a persistência e a dica, com a API de verdade e com a API simulada. |
 | Flake8 | Padroniza o código. A CI falha se ele reclamar. |
@@ -108,6 +108,15 @@ flowchart LR
 ```
 
 Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista, grava o arquivo e redireciona para `/`, que monta a página de novo com a lista atualizada e busca outra dica.
+
+### Decisões técnicas e o que eu aprendi
+
+- **API externa com plano B.** O `buscar_dica()` espera no máximo 5 segundos e, se qualquer coisa der errado, devolve "Foque no que importa: uma tarefa de cada vez." A página nunca quebra por causa da dica, e dois testes com mock cobrem os dois caminhos.
+- **Post/Redirect/Get.** Toda ação termina num redirecionamento para `/`. Por isso, recarregar a página depois de adicionar uma tarefa não cria a mesma tarefa de novo.
+- **A posição na lista como identificador.** As tarefas não têm id: concluir e apagar usam a posição delas no `tasks.json`. O template percorre a lista inteira, e não uma lista filtrada, para que `loop.index0` continue apontando para a posição certa mesmo com as tarefas divididas em duas seções. Funciona, mas tem limites (veja os próximos passos).
+- **O servidor calcula, o navegador cuida do relógio.** As contagens vêm do Jinja; a cor do prazo é calculada no navegador, com a data de quem está olhando. Ao revisar este README, descobri um bug nessa parte: a data de hoje sai do `toISOString()`, que está em UTC, e depois das 21h em Brasília uma tarefa que vence hoje aparece como vencida.
+- **Servidor de desenvolvimento não é servidor de produção.** `python src/app.py` usa o servidor do Flask, com debug ligado. No Render, quem atende é o Gunicorn.
+- **Teste de integração depende da internet.** Dois testes chamam a Advice Slip API de verdade: provam que a integração funciona, mas derrubam a CI se a API sair do ar. Os testes com mock cobrem a mesma função sem rede.
 
 <details>
 <summary>Estrutura de pastas</summary>
@@ -132,15 +141,6 @@ Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista
 ```
 
 </details>
-
-### Decisões técnicas e o que eu aprendi
-
-- **API externa com plano B.** O `buscar_dica()` espera no máximo 5 segundos e, se qualquer coisa der errado, devolve "Foque no que importa: uma tarefa de cada vez." A página nunca quebra por causa da dica, e dois testes com mock cobrem os dois caminhos.
-- **Post/Redirect/Get.** Toda ação termina num redirecionamento para `/`. Por isso, recarregar a página depois de adicionar uma tarefa não cria a mesma tarefa de novo.
-- **A posição na lista como identificador.** As tarefas não têm id: concluir e apagar usam a posição delas no `tasks.json`. O template percorre a lista inteira, e não uma lista filtrada, para que `loop.index0` continue apontando para a posição certa mesmo com as tarefas divididas em duas seções. Funciona, mas tem limites (veja os próximos passos).
-- **O servidor calcula, o navegador cuida do relógio.** As contagens vêm do Jinja; a cor do prazo é calculada no navegador, com a data de quem está olhando. Ao revisar este README, descobri um bug nessa parte: a data de hoje sai do `toISOString()`, que está em UTC, e depois das 21h em Brasília uma tarefa que vence hoje aparece como vencida.
-- **Servidor de desenvolvimento não é servidor de produção.** `python src/app.py` usa o servidor do Flask, com debug ligado. No Render, quem atende é o Gunicorn.
-- **Teste de integração depende da internet.** Dois testes chamam a Advice Slip API de verdade: provam que a integração funciona, mas derrubam a CI se a API sair do ar. Os testes com mock cobrem a mesma função sem rede.
 
 ## Testes e qualidade
 
