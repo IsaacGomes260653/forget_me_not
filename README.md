@@ -149,6 +149,8 @@ python -m pytest tests/ -v
 flake8 src/ --max-line-length=200
 ```
 
+Sem internet, os dois testes que chamam a Advice Slip API de verdade falham. Para rodar só os outros cinco: `python -m pytest tests/ -v -k "not api_advice"`.
+
 São 7 testes, e os 7 passaram no clone limpo. Os testes usam um `test_tasks.json`, criado e apagado a cada teste, então o seu `tasks.json` não é tocado.
 
 <details>
