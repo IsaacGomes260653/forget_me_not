@@ -55,3 +55,30 @@ Abra <http://127.0.0.1:5000>. Num clone limpo, do `git clone` até o app no ar, 
 - Rode os comandos na raiz do projeto: o `tasks.json` é procurado na pasta em que você está. O do repositório já vem com cinco tarefas de exemplo.
 - Se o PowerShell bloquear o `Activate.ps1`, rode antes `Set-ExecutionPolicy -Scope Process Bypass`, que vale só para aquela janela.
 
+## O que ele faz
+
+Na web (`src/app.py`):
+
+- **Tarefa com urgência e prazo.** Descrição de até 80 caracteres (o contador fica laranja depois de 60), urgência Alta, Média ou Baixa e prazo opcional.
+- **Prazo que avisa.** Uma pendente com prazo aparece em vermelho quando venceu ("Vencido em 10/11/2026"), em laranja no dia ("Vence hoje!") e em verde quando ainda há tempo.
+- **Pendentes e concluídas separadas**, cada seção com a sua contagem. O cabeçalho mostra a data de hoje e quantas tarefas faltam.
+- **Barra de progresso** com "X/Y concluídas" e um aviso quando todas estão feitas.
+- **Apagar pede confirmação** numa janela que fecha com Cancelar ou com um clique fora dela.
+- **Dica do dia** da [Advice Slip API](https://api.adviceslip.com), em inglês, buscada a cada carregamento da página.
+- **Tudo salvo em `tasks.json`**, sem banco de dados.
+
+No terminal (`src/main.py`): um menu com cinco opções (adicionar, listar, concluir, deletar e sair) e a lista numa tabela colorida, feita com o rich. No terminal a tarefa não tem prazo.
+
+<p align="center">
+  <img src=".github/capturas/terminal.png" width="640" alt="Versão de terminal: o menu do ForgetMeNot com cinco opções e, depois da opção 2, a tabela com ID, tarefa, urgência colorida e status pendente ou concluída">
+</p>
+
+<details>
+<summary>No celular</summary>
+<br>
+<p align="center">
+  <img src=".github/capturas/celular.png" width="300" alt="ForgetMeNot numa tela de 390 px: o formulário quebra em duas linhas e as tarefas ocupam a largura toda, com os botões Concluir e Deletar ao lado">
+</p>
+
+</details>
+
