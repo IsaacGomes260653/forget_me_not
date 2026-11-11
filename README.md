@@ -187,3 +187,12 @@ O código está sob a licença [MIT](LICENSE). A dica do dia vem da [Advice Slip
 
 ---
 
+## English summary
+
+**ForgetMeNot** is a to-do list built with Python and Flask as an academic project. Each task has an urgency level and an optional due date, and the page flags what is overdue and what is due today. **[Live demo](https://forget-me-not-z9hy.onrender.com)** (Render free tier, so the first request takes about 30 seconds).
+
+- **Web app:** add tasks with urgency and due date, separate pending and done lists, a progress bar, delete confirmation and a tip of the day from the [Advice Slip API](https://api.adviceslip.com), with a fixed fallback if the API takes longer than 5 seconds or fails.
+- **Terminal app:** a menu and a colored task table built with rich, sharing the same `tasks.json`.
+- **Quality:** 7 Pytest tests (persistence, the real API and mocked API calls) and Flake8, both run by GitHub Actions on every push and pull request to `main`. Production runs on Gunicorn, on Render.
+
+**Run it:** `git clone https://github.com/IsaacGomes260653/forget_me_not.git`, create a virtual environment, `pip install -r requirements.txt` and `python src/app.py`, then open <http://127.0.0.1:5000>. Code under the [MIT](LICENSE) license.
