@@ -169,3 +169,21 @@ São 7 testes, e os 7 passaram no clone limpo. Os testes usam um `test_tasks.jso
 
 O workflow [`ci.yml`](.github/workflows/ci.yml) roda em cada push e pull request para a `main`, no Ubuntu com Python 3.11: instala as dependências, roda o Flake8 em `src/` (com linhas de até 200 caracteres) e depois o Pytest.
 
+## Próximos passos
+
+- [ ] Corrigir a cor do prazo depois das 21h em Brasília, comparando com a data local em vez da data em UTC.
+- [ ] Dar um id fixo a cada tarefa e trocar `GET /concluir` e `GET /deletar` por POST, para que uma aba desatualizada não conclua nem apague a tarefa errada.
+- [ ] Trocar o `tasks.json` por um banco: na demonstração, todos os visitantes dividem a mesma lista, e o disco do Render não guarda os arquivos quando o serviço reinicia ou é publicado de novo.
+- [ ] Testar as rotas com o `app.test_client()` do Flask e fazer os testes de lógica chamarem o código do app.
+- [ ] Mostrar o prazo das tarefas concluídas como dd/mm/aaaa (hoje aparece 2026-11-07).
+
+## Autor
+
+Isaac Gomes de Moraes · [GitHub](https://github.com/IsaacGomes260653) · [LinkedIn](https://www.linkedin.com/in/isaacgomesmoraes/)
+
+## Licença
+
+O código está sob a licença [MIT](LICENSE). A dica do dia vem da [Advice Slip API](https://api.adviceslip.com).
+
+---
+
