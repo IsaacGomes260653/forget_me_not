@@ -176,7 +176,7 @@ O workflow [`ci.yml`](.github/workflows/ci.yml) roda em cada push e pull request
 
 - [ ] Dar um id fixo a cada tarefa e trocar `GET /concluir` e `GET /deletar` por POST, para que uma aba desatualizada não conclua nem apague a tarefa errada.
 - [ ] Trocar o `tasks.json` por um banco: na demonstração, todos os visitantes dividem a mesma lista, e o disco do Render não guarda os arquivos quando o serviço reinicia ou é publicado de novo.
-- [ ] Testar as rotas com o `app.test_client()` do Flask e fazer os testes de lógica chamarem o código do app.
+- [ ] Testar também as rotas de adicionar, concluir e apagar com o `app.test_client()` do Flask (hoje só a `/` é testada assim) e fazer os testes de lógica chamarem o código do app.
 - [ ] Mostrar o prazo das tarefas concluídas como dd/mm/aaaa (hoje aparece 2026-11-07).
 
 ## Autor
