@@ -44,7 +44,7 @@ Precisa do Git e do Python 3.11 ou mais novo.
 git clone https://github.com/IsaacGomes260653/forget_me_not.git
 cd forget_me_not
 python -m venv .venv
-source .venv/bin/activate     # no Windows (PowerShell): .venv\Scripts\Activate.ps1
+source .venv/bin/activate
 pip install -r requirements.txt
 python src/app.py
 ```
@@ -53,7 +53,7 @@ Abra <http://127.0.0.1:5000>. Num clone limpo, do `git clone` até o app no ar, 
 
 - Para a versão de terminal, rode `python src/main.py`. As duas versões leem e gravam o mesmo `tasks.json`.
 - Rode os comandos na raiz do projeto: o `tasks.json` é procurado na pasta em que você está. O do repositório já vem com cinco tarefas de exemplo.
-- Se o PowerShell bloquear o `Activate.ps1`, rode antes `Set-ExecutionPolicy -Scope Process Bypass`, que vale só para aquela janela.
+- No Windows (PowerShell), ative o ambiente com `.venv\Scripts\Activate.ps1` no lugar do `source`. Se o PowerShell bloquear o script, rode antes `Set-ExecutionPolicy -Scope Process Bypass`, que vale só para aquela janela.
 
 ## O que ele faz
 
