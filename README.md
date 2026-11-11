@@ -73,14 +73,11 @@ No terminal (`src/main.py`): um menu com cinco opções (adicionar, listar, conc
   <img src=".github/capturas/terminal.png" width="640" alt="Versão de terminal: o menu do ForgetMeNot com cinco opções e, depois da opção 2, a tabela com ID, tarefa, urgência colorida e status pendente ou concluída">
 </p>
 
-<details>
-<summary>No celular</summary>
-<br>
+No celular, o formulário quebra em duas linhas e as tarefas ocupam a largura toda:
+
 <p align="center">
   <img src=".github/capturas/celular.png" width="300" alt="ForgetMeNot numa tela de 390 px: o formulário quebra em duas linhas e as tarefas ocupam a largura toda, com os botões Concluir e Deletar ao lado">
 </p>
-
-</details>
 
 ## Como foi feito
 
