@@ -178,8 +178,13 @@
           <span class="badge badge-{{ urg | lower }}">{{ tarefa.urgencia }}</span>
           <div class="tarefa-info">
             <span class="tarefa-nome">{{ tarefa.nome }}</span>
-            {% if tarefa.prazo %}
-              <span class="tarefa-prazo prazo-js" data-prazo="{{ tarefa.prazo }}">📅 {{ tarefa.prazo }}</span>
+            {% set situacao = tarefa.prazo | situacao_prazo(hoje) %}
+            {% if situacao == 'vencido' %}
+              <span class="tarefa-prazo vencido">⚠️ Vencido em {{ tarefa.prazo | data_br }}</span>
+            {% elif situacao == 'hoje' %}
+              <span class="tarefa-prazo hoje">⏰ Vence hoje!</span>
+            {% elif tarefa.prazo %}
+              <span class="tarefa-prazo {{ situacao or '' }}">📅 {{ tarefa.prazo | data_br }}</span>
             {% endif %}
           </div>
           <div class="acoes">
@@ -230,9 +235,8 @@
   </footer>
 
   <script>
-    // Data no header
-    const hoje = new Date();
-    document.getElementById('data-hoje').textContent = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+    // Data no header, no horário de Brasília
+    document.getElementById('data-hoje').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', timeZone: 'America/Sao_Paulo' });
 
     // Contador de caracteres
     const campo = document.getElementById('campo-tarefa');
@@ -260,19 +264,6 @@
       if (e.target === e.currentTarget) fecharModal();
     });
 
-    // Colorir prazo
-    const prazos = document.querySelectorAll('.prazo-js');
-    const hojeStr = hoje.toISOString().split('T')[0];
-    prazos.forEach(el => {
-      const prazo = el.dataset.prazo;
-      if (prazo < hojeStr) el.classList.add('vencido'), el.textContent = '⚠️ Vencido em ' + formatarData(prazo);
-      else if (prazo === hojeStr) el.classList.add('hoje'), el.textContent = '⏰ Vence hoje!';
-      else el.classList.add('ok'), el.textContent = '📅 ' + formatarData(prazo);
-    });
-    function formatarData(str) {
-      const [y,m,d] = str.split('-');
-      return d + '/' + m + '/' + y;
-    }
   </script>
 
 </body>

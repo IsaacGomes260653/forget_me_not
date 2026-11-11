@@ -1,11 +1,15 @@
 import json
 import os
+from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
+
 import requests
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), "..", "templates"))
 
 FILE_PATH = "tasks.json"
+FUSO = ZoneInfo("America/Sao_Paulo")
 
 
 def carregar_tarefas():
@@ -32,11 +36,43 @@ def buscar_dica():
         return "Foque no que importa: uma tarefa de cada vez."
 
 
+def agora():
+    return datetime.now(timezone.utc)
+
+
+def hoje():
+    """A data de hoje no horário de Brasília, seja qual for o fuso do servidor."""
+    return agora().astimezone(FUSO).date()
+
+
+@app.template_filter("situacao_prazo")
+def situacao_prazo(prazo, dia):
+    """'vencido', 'hoje' ou 'ok' para um prazo AAAA-MM-DD; None sem prazo válido."""
+    try:
+        data = date.fromisoformat(prazo)
+    except (TypeError, ValueError):
+        return None
+    if data < dia:
+        return "vencido"
+    if data == dia:
+        return "hoje"
+    return "ok"
+
+
+@app.template_filter("data_br")
+def data_br(prazo):
+    """AAAA-MM-DD vira DD/MM/AAAA; qualquer outra coisa volta como veio."""
+    try:
+        return date.fromisoformat(prazo).strftime("%d/%m/%Y")
+    except (TypeError, ValueError):
+        return prazo
+
+
 @app.route("/")
 def index():
     tarefas = carregar_tarefas()
     dica = buscar_dica()
-    return render_template("index.html", tarefas=tarefas, dica=dica)
+    return render_template("index.html", tarefas=tarefas, dica=dica, hoje=hoje())
 
 
 @app.route("/adicionar", methods=["POST"])
