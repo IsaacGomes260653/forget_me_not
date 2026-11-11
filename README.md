@@ -177,7 +177,7 @@ O workflow [`ci.yml`](.github/workflows/ci.yml) roda em cada push e pull request
 
 ## Autor
 
-Isaac Gomes de Moraes · [GitHub](https://github.com/IsaacGomes260653) · [LinkedIn](https://www.linkedin.com/in/isaacgomesmoraes/)
+Isaac Gomes de Moraes · [LinkedIn](https://www.linkedin.com/in/isaacgomesmoraes/) · [e-mail](mailto:isaacgm260653@gmail.com) · [GitHub](https://github.com/IsaacGomes260653)
 
 ## Licença
 
