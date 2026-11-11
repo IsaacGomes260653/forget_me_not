@@ -28,3 +28,11 @@
   <a href="#english-summary">English</a>
 </p>
 
+## Demonstração
+
+<p align="center">
+  <img src=".github/capturas/demo.gif" width="720" alt="Demonstração do ForgetMeNot: a tarefa Marcar a apresentação do TCC é adicionada com urgência alta e prazo 14/11/2026; depois a tarefa Estudar para a prova de Estrutura de Dados é concluída e a barra de progresso avança; por fim uma tarefa concluída é apagada pela janela de confirmação">
+</p>
+
+Gravado com o Playwright, com o app rodando localmente (`python src/app.py`) e tarefas de exemplo. A dica do dia vem da Advice Slip API na hora, por isso muda a cada recarga. O app tem só o tema claro.
+
