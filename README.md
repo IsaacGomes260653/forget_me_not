@@ -98,14 +98,13 @@ No terminal (`src/main.py`): um menu com cinco opções (adicionar, listar, conc
 
 ```mermaid
 flowchart LR
-    N["Navegador"] -->|"GET /"| A["src/app.py<br/>Flask"]
-    N -->|"POST /adicionar<br/>GET /concluir/n<br/>GET /deletar/n"| A
+    N["Navegador"] -->|"pedido HTTP"| A["src/app.py · Flask<br/>GET /<br/>POST /adicionar<br/>GET /concluir/n<br/>GET /deletar/n"]
     A -->|"render_template"| T["templates/index.html<br/>Jinja e JavaScript"]
-    T -->|"página pronta"| N
+    T -->|"HTML"| N
     A <-->|"lê e grava"| J[("tasks.json")]
+    C["src/main.py<br/>terminal com rich"] <-->|"lê e grava"| J
     A -->|"requests, até 5 s"| D["Advice Slip API"]
     D -.->|"se falhar: dica fixa"| A
-    C["src/main.py<br/>terminal com rich"] <-->|"lê e grava"| J
 ```
 
 Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista, grava o arquivo e redireciona para `/`, que monta a página de novo com a lista atualizada e busca outra dica.
