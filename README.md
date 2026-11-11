@@ -60,7 +60,7 @@ Abra <http://127.0.0.1:5000>. Num clone limpo, do `git clone` até o app no ar, 
 Na web (`src/app.py`):
 
 - **Tarefa com urgência e prazo.** Descrição de até 80 caracteres (o contador fica laranja depois de 60), urgência Alta, Média ou Baixa e prazo opcional.
-- **Prazo que avisa.** Uma pendente com prazo aparece em vermelho quando venceu ("Vencido em 10/11/2026"), em laranja no dia ("Vence hoje!") e em verde quando ainda há tempo.
+- **Prazo que avisa.** Uma pendente com prazo aparece em vermelho quando venceu ("Vencido em 10/11/2026"), em laranja no dia ("Vence hoje!") e em verde quando ainda há tempo, sempre pelo horário de Brasília.
 - **Pendentes e concluídas separadas**, cada seção com a sua contagem. O cabeçalho mostra a data de hoje e quantas tarefas faltam.
 - **Barra de progresso** com "X/Y concluídas" e um aviso quando todas estão feitas.
 - **Apagar pede confirmação** numa janela que fecha com Cancelar ou com um clique fora dela.
@@ -84,9 +84,10 @@ No celular, o formulário quebra em duas linhas e as tarefas ocupam a largura to
 | Escolha | Por quê |
 |---|---|
 | Python e Flask | A página e as quatro rotas cabem em um arquivo de 73 linhas, sem estrutura obrigatória de projeto. |
-| Jinja (`templates/index.html`) | Contagens, barra de progresso e seções já saem prontas do servidor. O JavaScript cuida só do que depende do navegador: a data, a cor do prazo, o contador de caracteres e a janela de confirmação. |
+| Jinja (`templates/index.html`) | Contagens, barra de progresso, seções e a situação de cada prazo já saem prontas do servidor. O JavaScript cuida só da data do cabeçalho, do contador de caracteres e da janela de confirmação. |
 | Arquivo JSON | Dá para abrir e ler, e serve à web e ao terminal ao mesmo tempo. Para o tamanho do projeto, não precisava de banco. |
 | Requests | Faz o pedido da dica do dia à Advice Slip API. |
+| `zoneinfo` e tzdata | A data de hoje é a de Brasília (America/Sao_Paulo), seja qual for o fuso do servidor ou de quem abre a página. O tzdata traz a base de fusos que o Python não tem no Windows. |
 | rich | Tabela colorida e emojis no terminal, sem escrever códigos de cor na mão. |
 | Pytest e `unittest.mock` | Testam a persistência e a dica, com a API de verdade e com a API simulada. |
 | Flake8 | Padroniza o código. A CI falha se ele reclamar. |
@@ -111,7 +112,7 @@ Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista
 - **API externa com plano B.** O `buscar_dica()` espera no máximo 5 segundos e, se qualquer coisa der errado, devolve "Foque no que importa: uma tarefa de cada vez." A página nunca quebra por causa da dica, e dois testes com mock cobrem os dois caminhos.
 - **Post/Redirect/Get.** Toda ação termina num redirecionamento para `/`. Por isso, recarregar a página depois de adicionar uma tarefa não cria a mesma tarefa de novo.
 - **A posição na lista como identificador.** As tarefas não têm id: concluir e apagar usam a posição delas no `tasks.json`. O template percorre a lista inteira, e não uma lista filtrada, para que `loop.index0` continue apontando para a posição certa mesmo com as tarefas divididas em duas seções. Funciona, mas tem limites (veja os próximos passos).
-- **O servidor calcula, o navegador cuida do relógio.** As contagens vêm do Jinja; a cor do prazo é calculada no navegador, com a data de quem está olhando. Ao revisar este README, descobri um bug nessa parte: a data de hoje sai do `toISOString()`, que está em UTC, e depois das 21h em Brasília uma tarefa que vence hoje aparece como vencida.
+- **A data de hoje é a de Brasília.** A cor do prazo era calculada no navegador com o `toISOString()`, que devolve a data em UTC, e depois das 21h em Brasília uma tarefa que vencia no dia aparecia como vencida. Descobri o bug ao revisar este README. Agora o servidor decide a situação de cada prazo com o `zoneinfo`, no fuso America/Sao_Paulo, e um teste reproduz o caso das 22h.
 - **Servidor de desenvolvimento não é servidor de produção.** `python src/app.py` usa o servidor do Flask, com debug ligado. No Render, quem atende é o Gunicorn.
 - **Teste de integração depende da internet.** Dois testes chamam a Advice Slip API de verdade: provam que a integração funciona, mas derrubam a CI se a API sair do ar. Os testes com mock cobrem a mesma função sem rede.
 
@@ -124,9 +125,10 @@ Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista
 │   ├── app.py            # app web: as rotas do Flask e a dica do dia
 │   └── main.py           # versão de terminal: menu e tabela do rich
 ├── templates/
-│   └── index.html        # a página: Jinja, CSS e o JavaScript dos prazos e da confirmação
+│   └── index.html        # a página: Jinja, CSS e o JavaScript do contador e da confirmação
 ├── tests/
-│   └── test_main.py      # 7 testes: persistência, lógica e a Advice Slip API
+│   ├── test_main.py      # 7 testes: persistência, lógica e a Advice Slip API
+│   └── test_prazo.py     # 3 testes: o prazo no horário de Brasília
 ├── tasks.json            # as tarefas (vem com cinco de exemplo)
 ├── requirements.txt      # dependências com versão fixa
 ├── Procfile              # comando do Render: gunicorn src.app:app
@@ -146,9 +148,9 @@ python -m pytest tests/ -v
 flake8 src/ --max-line-length=200
 ```
 
-Sem internet, os dois testes que chamam a Advice Slip API de verdade falham. Para rodar só os outros cinco: `python -m pytest tests/ -v -k "not api_advice"`.
+Sem internet, os dois testes que chamam a Advice Slip API de verdade falham. Para rodar só os outros oito: `python -m pytest tests/ -v -k "not api_advice"`.
 
-São 7 testes, e os 7 passaram no clone limpo. Os testes usam um `test_tasks.json`, criado e apagado a cada teste, então o seu `tasks.json` não é tocado.
+São 10 testes, e os 10 passam localmente e na CI. Eles gravam em arquivos temporários (o `test_tasks.json` ou uma pasta temporária do Pytest), então o seu `tasks.json` não é tocado.
 
 <details>
 <summary>O que cada teste verifica</summary>
@@ -162,6 +164,9 @@ São 7 testes, e os 7 passaram no clone limpo. Os testes usam um `test_tasks.jso
 | `test_api_advice_retorna_json_valido` | integração (internet) | A resposta tem `slip.advice` com um texto não vazio. |
 | `test_buscar_dica_mock` | mock | Com o `requests.get` simulado, `buscar_dica()` devolve o texto da resposta. |
 | `test_buscar_dica_fallback_quando_api_falha` | mock | Com o `requests.get` dando erro, `buscar_dica()` devolve a dica fixa. |
+| `test_prazo_de_hoje_as_22h_em_brasilia_vence_hoje` | rota | Às 22h em Brasília (já 01h do dia seguinte em UTC), a tarefa que vence no dia aparece como "Vence hoje!", e não como vencida. |
+| `test_prazo_de_ontem_as_22h_em_brasilia_esta_vencido` | rota | No mesmo horário, a tarefa do dia anterior aparece como "Vencido em 10/11/2026". |
+| `test_prazo_de_amanha_as_22h_em_brasilia_esta_no_prazo` | rota | No mesmo horário, a tarefa do dia seguinte continua no prazo. |
 
 </details>
 
@@ -169,10 +174,9 @@ O workflow [`ci.yml`](.github/workflows/ci.yml) roda em cada push e pull request
 
 ## Próximos passos
 
-- [ ] Corrigir a cor do prazo depois das 21h em Brasília, comparando com a data local em vez da data em UTC.
 - [ ] Dar um id fixo a cada tarefa e trocar `GET /concluir` e `GET /deletar` por POST, para que uma aba desatualizada não conclua nem apague a tarefa errada.
 - [ ] Trocar o `tasks.json` por um banco: na demonstração, todos os visitantes dividem a mesma lista, e o disco do Render não guarda os arquivos quando o serviço reinicia ou é publicado de novo.
-- [ ] Testar as rotas com o `app.test_client()` do Flask e fazer os testes de lógica chamarem o código do app.
+- [ ] Testar também as rotas de adicionar, concluir e apagar com o `app.test_client()` do Flask (hoje só a `/` é testada assim) e fazer os testes de lógica chamarem o código do app.
 - [ ] Mostrar o prazo das tarefas concluídas como dd/mm/aaaa (hoje aparece 2026-11-07).
 
 ## Autor
@@ -191,6 +195,6 @@ O código está sob a licença [MIT](LICENSE). A dica do dia vem da [Advice Slip
 
 - **Web app:** add tasks with urgency and due date, separate pending and done lists, a progress bar, delete confirmation and a tip of the day from the [Advice Slip API](https://api.adviceslip.com), with a fixed fallback if the API takes longer than 5 seconds or fails.
 - **Terminal app:** a menu and a colored task table built with rich, sharing the same `tasks.json`.
-- **Quality:** 7 Pytest tests (persistence, the real API and mocked API calls) and Flake8, both run by GitHub Actions on every push and pull request to `main`. Production runs on Gunicorn, on Render.
+- **Quality:** 10 Pytest tests (persistence, the real API, mocked API calls and due dates in Brasília time) and Flake8, both run by GitHub Actions on every push and pull request to `main`. Production runs on Gunicorn, on Render.
 
 **Run it:** `git clone https://github.com/IsaacGomes260653/forget_me_not.git`, create a virtual environment, `pip install -r requirements.txt` and `python src/app.py`, then open <http://127.0.0.1:5000>. Code under the [MIT](LICENSE) license.
