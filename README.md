@@ -1,224 +1,196 @@
-# 🦧🐦‍🔥 ForgetMeNot — Gerenciador de Tarefas
+<p align="center">
+  <picture>
+    <source media="(max-width: 767px)" srcset="https://raw.githubusercontent.com/IsaacGomes260653/forget_me_not/main/.github/banner-mobile.svg">
+    <img src="https://raw.githubusercontent.com/IsaacGomes260653/forget_me_not/main/.github/banner.svg" alt="ForgetMeNot, trabalho acadêmico no ar no Render: tarefas com urgência e prazo, no navegador ou no terminal, com testes e CI no GitHub Actions">
+  </picture>
+</p>
 
-## 🌐 Aplicação publicada
-**Acesse em:** [https://forget-me-not-z9hy.onrender.com](https://forget-me-not-z9hy.onrender.com) (no plano gratuito do Render, o primeiro acesso pode levar uns 40 segundos)
+<p align="center">
+  <b>Lista de tarefas em Python e Flask em que cada tarefa tem urgência e prazo, e a página avisa o que já venceu e o que vence hoje.</b><br>
+  Para quem quer anotar tarefas sem criar conta, e para quem estuda Flask e quer ver um app pequeno com testes, CI e deploy.<br>
+  <a href="https://forget-me-not-z9hy.onrender.com"><b>Abrir a demonstração</b></a> · a lista é a mesma para todos os visitantes, e o primeiro acesso leva cerca de 30 segundos (plano gratuito do Render)
+</p>
 
-![Tela do ForgetMeNot: barra de progresso, dica do dia vinda da Advice Slip API, formulário de nova tarefa e as listas de pendentes e concluídas](.github/screenshot.png)
+<p align="center">
+  <a href="https://github.com/IsaacGomes260653/forget_me_not/actions/workflows/ci.yml"><img alt="Status da CI" src="https://img.shields.io/github/actions/workflow/status/IsaacGomes260653/forget_me_not/ci.yml?branch=main&style=flat-square&label=CI&color=122039&labelColor=0b1324"></a>
+  <a href="LICENSE"><img alt="Licença MIT" src="https://img.shields.io/github/license/IsaacGomes260653/forget_me_not?style=flat-square&label=licen%C3%A7a&color=122039&labelColor=0b1324"></a>
+  <a href="https://github.com/IsaacGomes260653/forget_me_not/commits/main"><img alt="Data do último commit" src="https://img.shields.io/github/last-commit/IsaacGomes260653/forget_me_not?style=flat-square&label=%C3%BAltimo%20commit&color=122039&labelColor=0b1324"></a>
+  <img alt="Linguagem principal: Python" src="https://img.shields.io/github/languages/top/IsaacGomes260653/forget_me_not?style=flat-square&logo=python&logoColor=white&color=122039&labelColor=0b1324">
+</p>
 
----
+<p align="center">
+  <a href="#demonstração">Demonstração</a> ·
+  <a href="#como-rodar-em-60-segundos">Como rodar</a> ·
+  <a href="#o-que-ele-faz">O que ele faz</a> ·
+  <a href="#como-foi-feito">Como foi feito</a> ·
+  <a href="#testes-e-qualidade">Testes e qualidade</a> ·
+  <a href="#próximos-passos">Próximos passos</a> ·
+  <a href="#english-summary">English</a>
+</p>
 
-## 📝 Introdução
-O **ForgetMeNot** é um gerenciador de tarefas (To-Do List) desenvolvido em Python, criado como parte de um trabalho acadêmico para demonstrar conceitos de programação, persistência de dados, integração com APIs públicas, testes automatizados, deploy em nuvem e integração contínua (CI/CD).
+## Demonstração
 
-O projeto evoluiu de uma aplicação CLI com interface no terminal para uma **aplicação web completa**, acessível pelo navegador, com integração a uma API pública externa e publicação em serviço de nuvem.
+<p align="center">
+  <img src=".github/capturas/demo.gif" width="720" alt="Demonstração do ForgetMeNot: a tarefa Marcar a apresentação do TCC é adicionada com urgência alta e prazo 14/11/2026; depois a tarefa Estudar para a prova de Estrutura de Dados é concluída e a barra de progresso avança; por fim uma tarefa concluída é apagada pela janela de confirmação">
+</p>
 
----
+Gravado com o Playwright, com o app rodando localmente (`python src/app.py`) e tarefas de exemplo. A dica do dia vem da Advice Slip API na hora, por isso muda a cada recarga. O app tem só o tema claro.
 
-## 👤 Autor
-- **Isaac Gomes**
-- **Repositório:** [https://github.com/IsaacGomes260653/forget_me_not](https://github.com/IsaacGomes260653/forget_me_not)
-- **Aplicação publicada:** [https://forget-me-not-z9hy.onrender.com](https://forget-me-not-z9hy.onrender.com)
+## Como rodar em 60 segundos
 
----
+Precisa do Git e do Python 3.11 ou mais novo.
 
-## ✨ Funcionalidades
-
-### Interface Web (versão atual)
-- **Adicionar Tarefas:** Cadastro com descrição, nível de urgência (Alta, Média, Baixa) e prazo de entrega.
-- **Visualização por seções:** Tarefas separadas em *Pendentes* e *Concluídas*.
-- **Barra de progresso:** Acompanhamento visual do percentual de tarefas concluídas.
-- **Dica do dia:** Integração com a [Advice Slip API](https://api.adviceslip.com) — exibe uma dica motivacional a cada acesso.
-- **Indicador de prazo:** Prazos são coloridos automaticamente (verde = no prazo, laranja = hoje, vermelho = vencido).
-- **Confirmação de exclusão:** Modal de confirmação antes de deletar uma tarefa.
-- **Conclusão de Tarefas:** Marcação de itens como concluídos com atualização imediata.
-- **Persistência de Dados:** Tarefas salvas automaticamente em `tasks.json`.
-
-### Interface CLI (versão original)
-- Listagem de tarefas com tabela colorida via biblioteca `rich`.
-- Adição, conclusão e exclusão de tarefas pelo terminal.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-| Tecnologia | Uso |
-|---|---|
-| Python 3.11+ | Linguagem principal |
-| Flask | Framework web |
-| Jinja2 | Templating HTML |
-| Requests | Consumo da API pública |
-| Rich | Interface CLI (versão original) |
-| Pytest | Testes unitários e de integração |
-| Flake8 | Linting e padronização de código |
-| Gunicorn | Servidor WSGI para produção |
-| GitHub Actions | CI/CD automatizado |
-| Render | Hospedagem em nuvem |
-
----
-
-## 🔌 Integração com API Pública
-
-O projeto consome a **Advice Slip API** — uma API pública, gratuita e sem necessidade de chave de autenticação.
-
-- **Endpoint:** `GET https://api.adviceslip.com/advice`
-- **Uso:** A cada acesso à aplicação web, uma dica aleatória é buscada e exibida na interface.
-- **Fallback:** Caso a API esteja indisponível, uma mensagem padrão é exibida sem quebrar a aplicação.
-
----
-
-## ⚠️ Pré-requisitos
-
-Você precisa ter o **Python 3.x** instalado. Caso não tenha:
-
-**🪟 Windows:**
-1. Acesse [python.org/downloads](https://www.python.org/downloads/)
-2. Baixe e execute o instalador.
-3. **IMPORTANTE:** Marque **"Add python.exe to PATH"** antes de instalar.
-
-**🍎 macOS:**
-1. Acesse [python.org/downloads](https://www.python.org/downloads/) e baixe o instalador.
-2. *(Alternativa via Homebrew: `brew install python`)*
-
-**🐧 Linux (Ubuntu/Debian):**
-```bash
-sudo apt update
-sudo apt install python3 python3-pip
-```
-
----
-
-## 🚀 Como instalar e executar
-
-### 1. Clonar o repositório
 ```bash
 git clone https://github.com/IsaacGomes260653/forget_me_not.git
 cd forget_me_not
-```
-
-### 2. Instalar as dependências
-```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-### 3. Executar a aplicação web
-```bash
 python src/app.py
 ```
-Acesse `http://127.0.0.1:5000` no navegador.
 
-### 4. Executar a aplicação CLI (versão original)
-```bash
-python src/main.py
+Abra <http://127.0.0.1:5000>. Num clone limpo, do `git clone` até o app no ar, levou cerca de 30 segundos (Windows 11 e Python 3.12). A CI instala as mesmas dependências no Ubuntu, com Python 3.11.
+
+- Para a versão de terminal, rode `python src/main.py`. As duas versões leem e gravam o mesmo `tasks.json`.
+- Rode os comandos na raiz do projeto: o `tasks.json` é procurado na pasta em que você está. O do repositório já vem com cinco tarefas de exemplo.
+- No Windows (PowerShell), ative o ambiente com `.venv\Scripts\Activate.ps1` no lugar do `source`. Se o PowerShell bloquear o script, rode antes `Set-ExecutionPolicy -Scope Process Bypass`, que vale só para aquela janela.
+
+## O que ele faz
+
+Na web (`src/app.py`):
+
+- **Tarefa com urgência e prazo.** Descrição de até 80 caracteres (o contador fica laranja depois de 60), urgência Alta, Média ou Baixa e prazo opcional.
+- **Prazo que avisa.** Uma pendente com prazo aparece em vermelho quando venceu ("Vencido em 10/11/2026"), em laranja no dia ("Vence hoje!") e em verde quando ainda há tempo.
+- **Pendentes e concluídas separadas**, cada seção com a sua contagem. O cabeçalho mostra a data de hoje e quantas tarefas faltam.
+- **Barra de progresso** com "X/Y concluídas" e um aviso quando todas estão feitas.
+- **Apagar pede confirmação** numa janela que fecha com Cancelar ou com um clique fora dela.
+- **Dica do dia** da [Advice Slip API](https://api.adviceslip.com), em inglês, buscada a cada carregamento da página.
+- **Tudo salvo em `tasks.json`**, sem banco de dados.
+
+No terminal (`src/main.py`): um menu com cinco opções (adicionar, listar, concluir, deletar e sair) e a lista numa tabela colorida, feita com o rich. No terminal a tarefa não tem prazo.
+
+<p align="center">
+  <img src=".github/capturas/terminal.png" width="640" alt="Versão de terminal: o menu do ForgetMeNot com cinco opções e, depois da opção 2, a tabela com ID, tarefa, urgência colorida e status pendente ou concluída">
+</p>
+
+No celular, o formulário quebra em duas linhas e as tarefas ocupam a largura toda:
+
+<p align="center">
+  <img src=".github/capturas/celular.png" width="300" alt="ForgetMeNot numa tela de 390 px: o formulário quebra em duas linhas e as tarefas ocupam a largura toda, com os botões Concluir e Deletar ao lado">
+</p>
+
+## Como foi feito
+
+| Escolha | Por quê |
+|---|---|
+| Python e Flask | A página e as quatro rotas cabem em um arquivo de 73 linhas, sem estrutura obrigatória de projeto. |
+| Jinja (`templates/index.html`) | Contagens, barra de progresso e seções já saem prontas do servidor. O JavaScript cuida só do que depende do navegador: a data, a cor do prazo, o contador de caracteres e a janela de confirmação. |
+| Arquivo JSON | Dá para abrir e ler, e serve à web e ao terminal ao mesmo tempo. Para o tamanho do projeto, não precisava de banco. |
+| Requests | Faz o pedido da dica do dia à Advice Slip API. |
+| rich | Tabela colorida e emojis no terminal, sem escrever códigos de cor na mão. |
+| Pytest e `unittest.mock` | Testam a persistência e a dica, com a API de verdade e com a API simulada. |
+| Flake8 | Padroniza o código. A CI falha se ele reclamar. |
+| GitHub Actions | Roda o lint e os testes em cada push e pull request para a `main`. |
+| Gunicorn e Render | O servidor do Flask é só para desenvolvimento. No Render, o app sobe com `gunicorn src.app:app`, do `Procfile`. |
+
+```mermaid
+flowchart LR
+    N["Navegador"] -->|"pedido HTTP"| A["src/app.py · Flask<br/>GET /<br/>POST /adicionar<br/>GET /concluir/n<br/>GET /deletar/n"]
+    A -->|"render_template"| T["templates/index.html<br/>Jinja e JavaScript"]
+    T -->|"HTML"| N
+    A <-->|"lê e grava"| J[("tasks.json")]
+    C["src/main.py<br/>terminal com rich"] <-->|"lê e grava"| J
+    A -->|"requests, até 5 s"| D["Advice Slip API"]
+    D -.->|"se falhar: dica fixa"| A
 ```
 
----
+Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista, grava o arquivo e redireciona para `/`, que monta a página de novo com a lista atualizada e busca outra dica.
 
-## 🧪 Testes
+### Decisões técnicas e o que eu aprendi
 
-O projeto possui **testes unitários** e **testes de integração** com a API externa, executados automaticamente via GitHub Actions a cada push.
+- **API externa com plano B.** O `buscar_dica()` espera no máximo 5 segundos e, se qualquer coisa der errado, devolve "Foque no que importa: uma tarefa de cada vez." A página nunca quebra por causa da dica, e dois testes com mock cobrem os dois caminhos.
+- **Post/Redirect/Get.** Toda ação termina num redirecionamento para `/`. Por isso, recarregar a página depois de adicionar uma tarefa não cria a mesma tarefa de novo.
+- **A posição na lista como identificador.** As tarefas não têm id: concluir e apagar usam a posição delas no `tasks.json`. O template percorre a lista inteira, e não uma lista filtrada, para que `loop.index0` continue apontando para a posição certa mesmo com as tarefas divididas em duas seções. Funciona, mas tem limites (veja os próximos passos).
+- **O servidor calcula, o navegador cuida do relógio.** As contagens vêm do Jinja; a cor do prazo é calculada no navegador, com a data de quem está olhando. Ao revisar este README, descobri um bug nessa parte: a data de hoje sai do `toISOString()`, que está em UTC, e depois das 21h em Brasília uma tarefa que vence hoje aparece como vencida.
+- **Servidor de desenvolvimento não é servidor de produção.** `python src/app.py` usa o servidor do Flask, com debug ligado. No Render, quem atende é o Gunicorn.
+- **Teste de integração depende da internet.** Dois testes chamam a Advice Slip API de verdade: provam que a integração funciona, mas derrubam a CI se a API sair do ar. Os testes com mock cobrem a mesma função sem rede.
 
-### Rodar os testes localmente
-```bash
-python -m pytest tests/ -v
-```
-
-### Testes implementados
-
-| Teste | Tipo | Descrição |
-|---|---|---|
-| `test_salvar_e_carregar_tarefas` | Unitário | Valida persistência em JSON |
-| `test_adicionar_tarefa_logica` | Unitário | Valida lógica de adição |
-| `test_concluir_tarefa_logica` | Unitário | Valida conclusão de tarefa |
-| `test_api_advice_retorna_status_200` | Integração | Verifica que a API responde com sucesso |
-| `test_api_advice_retorna_json_valido` | Integração | Verifica estrutura do JSON retornado |
-| `test_buscar_dica_mock` | Integração (mock) | Valida processamento da resposta da API |
-| `test_buscar_dica_fallback_quando_api_falha` | Integração (mock) | Valida comportamento quando a API falha |
-
----
-
-## 🔄 CI/CD — GitHub Actions
-
-A cada `push` ou `pull request`, o pipeline executa automaticamente:
-1. **Flake8** — verificação de padrões e qualidade do código
-2. **Pytest** — execução de todos os testes unitários e de integração
-
----
-
-## 📁 Estrutura do Projeto
+<details>
+<summary>Estrutura de pastas</summary>
 
 ```
-forget_me_not/
-├── .github/
-│   └── workflows/
-│       └── ci.yml          # Pipeline CI/CD
+.
 ├── src/
-│   ├── app.py              # Servidor Flask (interface web)
-│   └── main.py             # Aplicação CLI original
+│   ├── app.py            # app web: as rotas do Flask e a dica do dia
+│   └── main.py           # versão de terminal: menu e tabela do rich
 ├── templates/
-│   └── index.html          # Interface web (HTML + CSS)
+│   └── index.html        # a página: Jinja, CSS e o JavaScript dos prazos e da confirmação
 ├── tests/
-│   └── test_main.py        # Testes unitários e de integração
-├── tasks.json              # Persistência de dados
-├── requirements.txt        # Dependências do projeto
-├── Procfile                # Configuração para deploy no Render
-├── LICENSE                 # Licença MIT
-└── README.md
+│   └── test_main.py      # 7 testes: persistência, lógica e a Advice Slip API
+├── tasks.json            # as tarefas (vem com cinco de exemplo)
+├── requirements.txt      # dependências com versão fixa
+├── Procfile              # comando do Render: gunicorn src.app:app
+├── VERSION               # 1.0.0
+├── .gitattributes        # tira o HTML da contagem de linguagens do GitHub
+└── .github/
+    ├── workflows/ci.yml  # CI: flake8 e pytest
+    └── capturas/         # GIF e capturas deste README
 ```
 
----
+</details>
 
-## 📄 Licença
-
-[MIT](LICENSE)
-
----
-
-# 🦧🐦‍🔥 ForgetMeNot — Task Manager (English)
-
-## 🌐 Live app
-**Live at:** [https://forget-me-not-z9hy.onrender.com](https://forget-me-not-z9hy.onrender.com)
-
-## 📝 Introduction
-**ForgetMeNot** is a To-Do List app built in Python as an academic project to demonstrate core programming concepts, data persistence, public API integration, automated testing, cloud deployment, and CI/CD.
-
-It evolved from a terminal CLI app into a **full web application**, integrating an external public API and deployed to the cloud.
-
-## ✨ Features
-
-**Web UI (current):** add tasks with description, urgency (High/Medium/Low), and due date; tasks split into *Pending* and *Completed* sections; a progress bar tracking completion percentage; a "tip of the day" via the [Advice Slip API](https://api.adviceslip.com); color-coded deadlines (green = on time, orange = due today, red = overdue); delete confirmation modal; instant task completion; and automatic persistence to `tasks.json`.
-
-**CLI (original version):** colored task table via `rich`, with add/complete/delete from the terminal.
-
-## 🛠️ Tech stack
-
-Python 3.11+, Flask, Jinja2, Requests, Rich (CLI), Pytest, Flake8, Gunicorn, GitHub Actions (CI/CD), Render (hosting).
-
-## 🔌 Public API integration
-
-Consumes the free, key-less **Advice Slip API** (`GET https://api.adviceslip.com/advice`) — a random tip is fetched on every visit, with a fallback message if the API is unavailable.
-
-## 🚀 Install & run
-
-```bash
-git clone https://github.com/IsaacGomes260653/forget_me_not.git
-cd forget_me_not
-pip install -r requirements.txt
-python src/app.py      # web app -> http://127.0.0.1:5000
-python src/main.py     # original CLI version
-```
-
-## 🧪 Tests
-
-Unit and integration tests run automatically via GitHub Actions on every push.
+## Testes e qualidade
 
 ```bash
 python -m pytest tests/ -v
+flake8 src/ --max-line-length=200
 ```
 
-## 🔄 CI/CD
+Sem internet, os dois testes que chamam a Advice Slip API de verdade falham. Para rodar só os outros cinco: `python -m pytest tests/ -v -k "not api_advice"`.
 
-Every push/PR runs Flake8 (lint) then Pytest (unit + integration tests) via GitHub Actions.
+São 7 testes, e os 7 passaram no clone limpo. Os testes usam um `test_tasks.json`, criado e apagado a cada teste, então o seu `tasks.json` não é tocado.
 
-## 📄 License
+<details>
+<summary>O que cada teste verifica</summary>
 
-[MIT](LICENSE)
+| Teste | Tipo | O que verifica |
+|---|---|---|
+| `test_salvar_e_carregar_tarefas` | unidade | Grava uma tarefa com `salvar_tarefas` e lê de volta com `carregar_tarefas`, do `src/main.py`. |
+| `test_adicionar_tarefa_logica` | unidade | Acrescenta uma tarefa numa lista, sem chamar o código do app. |
+| `test_concluir_tarefa_logica` | unidade | Marca uma tarefa de uma lista como concluída, sem chamar o código do app. |
+| `test_api_advice_retorna_status_200` | integração (internet) | A Advice Slip API responde com status 200. |
+| `test_api_advice_retorna_json_valido` | integração (internet) | A resposta tem `slip.advice` com um texto não vazio. |
+| `test_buscar_dica_mock` | mock | Com o `requests.get` simulado, `buscar_dica()` devolve o texto da resposta. |
+| `test_buscar_dica_fallback_quando_api_falha` | mock | Com o `requests.get` dando erro, `buscar_dica()` devolve a dica fixa. |
+
+</details>
+
+O workflow [`ci.yml`](.github/workflows/ci.yml) roda em cada push e pull request para a `main`, no Ubuntu com Python 3.11: instala as dependências, roda o Flake8 em `src/` (com linhas de até 200 caracteres) e depois o Pytest.
+
+## Próximos passos
+
+- [ ] Corrigir a cor do prazo depois das 21h em Brasília, comparando com a data local em vez da data em UTC.
+- [ ] Dar um id fixo a cada tarefa e trocar `GET /concluir` e `GET /deletar` por POST, para que uma aba desatualizada não conclua nem apague a tarefa errada.
+- [ ] Trocar o `tasks.json` por um banco: na demonstração, todos os visitantes dividem a mesma lista, e o disco do Render não guarda os arquivos quando o serviço reinicia ou é publicado de novo.
+- [ ] Testar as rotas com o `app.test_client()` do Flask e fazer os testes de lógica chamarem o código do app.
+- [ ] Mostrar o prazo das tarefas concluídas como dd/mm/aaaa (hoje aparece 2026-11-07).
+
+## Autor
+
+Isaac Gomes de Moraes · [LinkedIn](https://www.linkedin.com/in/isaacgomesmoraes/) · [e-mail](mailto:isaacgm260653@gmail.com) · [GitHub](https://github.com/IsaacGomes260653)
+
+## Licença
+
+O código está sob a licença [MIT](LICENSE). A dica do dia vem da [Advice Slip API](https://api.adviceslip.com).
+
+---
+
+## English summary
+
+**ForgetMeNot** is a to-do list built with Python and Flask as an academic project. Each task has an urgency level and an optional due date, and the page flags what is overdue and what is due today. **[Live demo](https://forget-me-not-z9hy.onrender.com)** (Render free tier, so the first request takes about 30 seconds).
+
+- **Web app:** add tasks with urgency and due date, separate pending and done lists, a progress bar, delete confirmation and a tip of the day from the [Advice Slip API](https://api.adviceslip.com), with a fixed fallback if the API takes longer than 5 seconds or fails.
+- **Terminal app:** a menu and a colored task table built with rich, sharing the same `tasks.json`.
+- **Quality:** 7 Pytest tests (persistence, the real API and mocked API calls) and Flake8, both run by GitHub Actions on every push and pull request to `main`. Production runs on Gunicorn, on Render.
+
+**Run it:** `git clone https://github.com/IsaacGomes260653/forget_me_not.git`, create a virtual environment, `pip install -r requirements.txt` and `python src/app.py`, then open <http://127.0.0.1:5000>. Code under the [MIT](LICENSE) license.
