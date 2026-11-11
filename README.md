@@ -8,7 +8,7 @@
 <p align="center">
   <b>Lista de tarefas em Python e Flask em que cada tarefa tem urgência e prazo, e a página avisa o que já venceu e o que vence hoje.</b><br>
   Para quem quer anotar tarefas sem criar conta, e para quem estuda Flask e quer ver um app pequeno com testes, CI e deploy.<br>
-  <a href="https://forget-me-not-z9hy.onrender.com"><b>Abrir a demonstração</b></a> · no plano gratuito do Render, o primeiro acesso leva cerca de 30 segundos
+  <a href="https://forget-me-not-z9hy.onrender.com"><b>Abrir a demonstração</b></a> · a lista é a mesma para todos os visitantes, e o primeiro acesso leva cerca de 30 segundos (plano gratuito do Render)
 </p>
 
 <p align="center">
@@ -23,7 +23,7 @@
   <a href="#como-rodar-em-60-segundos">Como rodar</a> ·
   <a href="#o-que-ele-faz">O que ele faz</a> ·
   <a href="#como-foi-feito">Como foi feito</a> ·
-  <a href="#testes-e-qualidade">Testes e CI</a> ·
+  <a href="#testes-e-qualidade">Testes e qualidade</a> ·
   <a href="#próximos-passos">Próximos passos</a> ·
   <a href="#english-summary">English</a>
 </p>
