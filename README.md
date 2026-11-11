@@ -143,3 +143,29 @@ Cada ação (adicionar, concluir ou apagar) carrega o `tasks.json`, muda a lista
 - **Servidor de desenvolvimento não é servidor de produção.** `python src/app.py` usa o servidor do Flask, com debug ligado. No Render, quem atende é o Gunicorn.
 - **Teste de integração depende da internet.** Dois testes chamam a Advice Slip API de verdade: provam que a integração funciona, mas derrubam a CI se a API sair do ar. Os testes com mock cobrem a mesma função sem rede.
 
+## Testes e qualidade
+
+```bash
+python -m pytest tests/ -v
+flake8 src/ --max-line-length=200
+```
+
+São 7 testes, e os 7 passaram no clone limpo. Os testes usam um `test_tasks.json`, criado e apagado a cada teste, então o seu `tasks.json` não é tocado.
+
+<details>
+<summary>O que cada teste verifica</summary>
+
+| Teste | Tipo | O que verifica |
+|---|---|---|
+| `test_salvar_e_carregar_tarefas` | unidade | Grava uma tarefa com `salvar_tarefas` e lê de volta com `carregar_tarefas`, do `src/main.py`. |
+| `test_adicionar_tarefa_logica` | unidade | Acrescenta uma tarefa numa lista, sem chamar o código do app. |
+| `test_concluir_tarefa_logica` | unidade | Marca uma tarefa de uma lista como concluída, sem chamar o código do app. |
+| `test_api_advice_retorna_status_200` | integração (internet) | A Advice Slip API responde com status 200. |
+| `test_api_advice_retorna_json_valido` | integração (internet) | A resposta tem `slip.advice` com um texto não vazio. |
+| `test_buscar_dica_mock` | mock | Com o `requests.get` simulado, `buscar_dica()` devolve o texto da resposta. |
+| `test_buscar_dica_fallback_quando_api_falha` | mock | Com o `requests.get` dando erro, `buscar_dica()` devolve a dica fixa. |
+
+</details>
+
+O workflow [`ci.yml`](.github/workflows/ci.yml) roda em cada push e pull request para a `main`, no Ubuntu com Python 3.11: instala as dependências, roda o Flake8 em `src/` (com linhas de até 200 caracteres) e depois o Pytest.
+
